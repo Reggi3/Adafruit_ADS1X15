@@ -72,7 +72,7 @@ static void writeRegister(uint8_t i2cAddress, uint8_t reg, uint16_t value) {
 
 /**************************************************************************/
 /*!
-    @brief  Writes 16-bits to the specified destination register
+    @brief  Reads 16-bits from the specified source register
 */
 /**************************************************************************/
 static uint16_t readRegister(uint8_t i2cAddress, uint8_t reg) {
