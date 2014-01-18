@@ -18,6 +18,9 @@
     v1.0 - First release
 */
 /**************************************************************************/
+
+#include <stdint.h>
+
 #if ARDUINO >= 100
  #include "Arduino.h"
 #else
