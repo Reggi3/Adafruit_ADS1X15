@@ -1,5 +1,8 @@
 #include <Wire.h>
+
 #include <Adafruit_ADS1015.h>
+
+#include <RFduinoBLE.h>
 
 Adafruit_ADS1115 ads;  /* Use this for the 16-bit version */
 //Adafruit_ADS1015 ads;     /* Use thi for the 12-bit version */
@@ -39,14 +42,17 @@ void setup(void)
   pinMode(GPIO_RDY, INPUT);
   RFduino_pinWakeCallback(GPIO_RDY, LOW, isr);
   ads.beginContinuousMode(0);
-  
+
+  RFduinoBLE.begin();
+
   //while(!Serial.available());
   //while(Serial.available()) {
   //  Serial.read();
   //}
 }
 
-static void write_int(uint16_t val)
+#if 0
+static void write_int_to_serial(uint16_t val)
 {
     uint8_t c;
     c = val & 0xff;
@@ -54,12 +60,25 @@ static void write_int(uint16_t val)
     c = (val & 0xff00) >> 8;
     Serial.write(c);
 }
+#endif
+
+static bool connected;
+
+void RFduinoBLE_onConnect() {
+  connected = true;
+}
+
+static void write_int_to_BLE(uint16_t val)
+{
+    RFduinoBLE.send((char *)&val, 2);
+}
 
 void loop(void)
 {
   if (cur_isr > 0) {
     cur_isr = 0;
-    //write_int(cur_val);
+    //write_int_to_serial(cur_val);
+    write_int_to_BLE(cur_val);
     Serial.println(cur_val);
   }
 }
